@@ -7,10 +7,12 @@ namespace FM_DATABASE.Controllers
     public class ClubController : Controller
     {
         private readonly IRepositoryClubs repositoryClubs;
+        private readonly IRepositoryPlayers repositoryPlayers;
 
-        public ClubController(IRepositoryClubs repositoryClubs)
+        public ClubController(IRepositoryClubs repositoryClubs,IRepositoryPlayers repositoryPlayers)
         {
             this.repositoryClubs = repositoryClubs;
+            this.repositoryPlayers = repositoryPlayers;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -69,6 +71,13 @@ namespace FM_DATABASE.Controllers
             var club = await repositoryClubs.GetById(id);
             
             if (club is null)
+            {
+                return RedirectToAction("NotFound", "Home");
+            }
+
+            var players = await repositoryPlayers.GetPlayersByClub(club);
+
+            if (players.Count()!=0)
             {
                 return RedirectToAction("NotFound", "Home");
             }

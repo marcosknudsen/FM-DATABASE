@@ -11,6 +11,7 @@ namespace FM_DATABASE.Services
         Task Edit(PlayerCreationViewModel player);
         Task<IEnumerable<Player>> GetAll();
         Task<Player> GetById(int id);
+        Task<IEnumerable<Player>> GetPlayersByClub(Club club);
     }
     public class RepositoryPlayers:IRepositoryPlayers
     {
@@ -59,6 +60,14 @@ namespace FM_DATABASE.Services
             using (var connection=new SqlConnection(connectionString))
             {
                 await connection.ExecuteAsync(@"DELETE FROM Player WHERE Id=@Id",new {id});
+            }
+        }
+
+        public async Task<IEnumerable<Player>> GetPlayersByClub(Club club)
+        {
+            using(var connection=new SqlConnection(connectionString))
+            {
+                return await connection.QueryAsync<Player>(@"SELECT Id,FirstName,LastName FROM Player WHERE ClubId=@Id",club);
             }
         }
     }
