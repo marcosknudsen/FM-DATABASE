@@ -54,7 +54,7 @@ namespace FM_DATABASE.Controllers
         {
             var club = await repositoryClubs.GetById(player.ClubId);
 
-            if (player is null)
+            if (club is null)
             {
                 return RedirectToAction("NotFound", "Home");
             }
