@@ -1,0 +1,24 @@
+﻿@model PlayerCreationViewModel
+
+@{
+    ViewData["Title"] = "Create Player";
+}
+
+<h1>Players: Create</h1>
+
+<form asp-action="Create">
+    <div class="mb-3">
+        <label class="form-label" asp-for="FirstName"></label>
+        <input type="text" asp-for="FirstName" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="LastName"></label>
+        <input type="text" asp-for="LastName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="ClubId" class="form-label"></label>
+        <select asp-for="ClubId" asp-items="Model.Clubs" class="form-select"></select>
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>

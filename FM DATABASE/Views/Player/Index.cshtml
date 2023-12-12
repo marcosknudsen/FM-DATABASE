@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Players";
+}
+
+<h1>Players</h1>
+<a asp-action="Create" class="btn btn-primary">Create new player</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Fullname</th>
+            <th>Club</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var player in Model)
+        {
+            <tr>
+                <th>@player.Id</th>
+                <th>@player.FirstName @player.LastName</th>
+                <th>@player.ClubName</th>
+            </tr>
+        }
+    </tbody>
+</table>

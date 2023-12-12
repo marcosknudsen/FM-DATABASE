@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using FM_DATABASE.Models;
 using Microsoft.Data.SqlClient;
+using System.Diagnostics;
 
 namespace FM_DATABASE.Services
 {
@@ -8,6 +9,7 @@ namespace FM_DATABASE.Services
     {
         Task Create(Club club);
         Task<IEnumerable<Club>> GetAll();
+        Task<Club> GetById(int id);
     }
     public class RepositoryClubs:IRepositoryClubs
     {
@@ -32,6 +34,14 @@ namespace FM_DATABASE.Services
             {
                 return await connection.QueryAsync<Club>($@"SELECT Id,Name FROM Club");
             }
+        }
+
+        public async Task<Club> GetById(int id)
+        {
+            using var connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<Club>(
+                @"SELECT Id, Name FROM Club
+                WHERE Id=@Id", new { id });
         }
     }
 }
