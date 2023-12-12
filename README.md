@@ -1,1 +1,1 @@
-Just a personal project as my first .NET MVC solution.
+Just a personal project as my first ASP.NET Core MVC solution.
