@@ -107,8 +107,8 @@ namespace FM_DATABASE.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var modelo=await repositoryPlayers.GetById(id);
-            return View(modelo);
+            var player=await repositoryPlayers.GetById(id);
+            return View(player);
         }
 
         [HttpPost]

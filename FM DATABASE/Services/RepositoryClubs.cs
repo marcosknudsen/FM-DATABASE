@@ -8,6 +8,8 @@ namespace FM_DATABASE.Services
     public interface IRepositoryClubs
     {
         Task Create(Club club);
+        Task Delete(int id);
+        Task Edit(Club club);
         Task<IEnumerable<Club>> GetAll();
         Task<Club> GetById(int id);
     }
@@ -25,6 +27,22 @@ namespace FM_DATABASE.Services
             {
                 var id = await connection.QuerySingleAsync<int>($@"INSERT INTO Club(Name) VALUES(@Name);SELECT SCOPE_IDENTITY()",club);
                 club.Id = id;
+            }
+        }
+
+        public async Task Edit(Club club)
+        {
+            using(var connection=new SqlConnection(connectionString))
+            {
+                await connection.ExecuteAsync($@"UPDATE Club SET Name=@Name WHERE Id=@Id",club);
+            }
+        }
+
+        public async Task Delete(int id)
+        {
+            using(var connection=new SqlConnection(connectionString))
+            {
+                await connection.ExecuteAsync($@"DELETE FROM Club WHERE Id=@Id",new {id});
             }
         }
 
