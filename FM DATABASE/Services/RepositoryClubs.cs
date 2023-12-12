@@ -7,6 +7,7 @@ namespace FM_DATABASE.Services
     public interface IRepositoryClubs
     {
         Task Create(Club club);
+        Task<IEnumerable<Club>> GetAll();
     }
     public class RepositoryClubs:IRepositoryClubs
     {
@@ -22,6 +23,14 @@ namespace FM_DATABASE.Services
             {
                 var id = await connection.QuerySingleAsync<int>($@"INSERT INTO Club(Name) VALUES(@Name);SELECT SCOPE_IDENTITY()",club);
                 club.Id = id;
+            }
+        }
+
+        public async Task<IEnumerable<Club>> GetAll()
+        {
+            using (var connection=new SqlConnection(connectionString))
+            {
+                return await connection.QueryAsync<Club>($@"SELECT Id,Name FROM Club");
             }
         }
     }

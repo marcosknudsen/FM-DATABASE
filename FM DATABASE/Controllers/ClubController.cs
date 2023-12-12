@@ -13,9 +13,10 @@ namespace FM_DATABASE.Controllers
             this.repositoryClubs = repositoryClubs;
         }
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var clubs = await repositoryClubs.GetAll();
+            return View(clubs);
         }
 
         [HttpGet]
