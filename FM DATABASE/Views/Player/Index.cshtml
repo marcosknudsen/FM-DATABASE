@@ -11,6 +11,7 @@
             <th>Id</th>
             <th>Fullname</th>
             <th>Club</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -20,6 +21,10 @@
                 <th>@player.Id</th>
                 <th>@player.FirstName @player.LastName</th>
                 <th>@player.ClubName</th>
+                <th style="text-align:right">
+                    <a class="btn btn-primary" asp-route-id="@player.Id" asp-action="Edit">Edit</a>
+                    <a class="btn btn-danger" asp-route-id="@player.Id" asp-action="Delete">Delete</a>
+                </th>
             </tr>
         }
     </tbody>

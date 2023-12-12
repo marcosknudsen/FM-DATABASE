@@ -1,6 +1,8 @@
-﻿using FM_DATABASE.Models;
+﻿using AutoMapper;
+using FM_DATABASE.Models;
 using FM_DATABASE.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 
@@ -10,12 +12,15 @@ namespace FM_DATABASE.Controllers
     {
         private readonly IRepositoryClubs repositoryClubs;
         private readonly IRepositoryPlayers repositoryPlayers;
+        private readonly IMapper mapper;
 
-        public PlayerController(IRepositoryClubs repositoryClubs,IRepositoryPlayers repositoryPlayers)
+        public PlayerController(IRepositoryClubs repositoryClubs,IRepositoryPlayers repositoryPlayers,IMapper mapper)
         {
             this.repositoryClubs = repositoryClubs;
             this.repositoryPlayers = repositoryPlayers;
+            this.mapper = mapper;
         }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -61,6 +66,62 @@ namespace FM_DATABASE.Controllers
             }
 
             await repositoryPlayers.Create(player);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var player = await repositoryPlayers.GetById(id);
+
+            if (player is null)
+            {
+                return RedirectToAction("NotFound", "Home");
+            }
+
+            var modelo = mapper.Map<PlayerCreationViewModel>(player);
+            modelo.Clubs = await GetClubs();
+            return View(modelo);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(PlayerCreationViewModel player)
+        {
+            var club = await repositoryClubs.GetById(player.ClubId);
+
+            if (player is null)
+            {
+                return RedirectToAction("NotFound", "Home");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                player.Clubs = await GetClubs();
+                return View(player);
+            }
+
+            await repositoryPlayers.Edit(player);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var modelo=await repositoryPlayers.GetById(id);
+            return View(modelo);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeletePlayer(int id)
+        {
+            var player=await repositoryPlayers.GetById(id);
+
+            if (player is null)
+            {
+                return RedirectToAction("NotFound", "Home");
+            }
+
+            await repositoryPlayers.Delete(id);
             return RedirectToAction("Index");
         }
 
