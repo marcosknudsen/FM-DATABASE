@@ -7,6 +7,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IRepositoryClubs,RepositoryClubs>();
 builder.Services.AddTransient<IRepositoryPlayers,RepositoryPlayers>();
 builder.Services.AddTransient<IRepositoryCountries,RepositoryCountries>();
+builder.Services.AddTransient<IRepositoryLeagues,RepositoryLeagues>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();

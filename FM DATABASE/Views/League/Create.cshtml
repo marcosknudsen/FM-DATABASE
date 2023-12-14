@@ -1,0 +1,27 @@
+﻿@model LeagueCreationViewModel
+@{
+    ViewData["Title"] = "Create league";
+}
+
+<h1>League: Create</h1>
+
+<form asp-action="Create">
+    <div class="mb-3">
+        <label class="form-label" asp-for="Name"></label>
+        <input class="form-control" asp-for="Name" type="text"/>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="Code"></label>
+        <input class="form-control" type="text" asp-for="Code"/>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CountryId" class="form-label"></label>
+        <select asp-for="CountryId" asp-items="Model.Countries" class="form-select"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Rank" class="form-label"></label>
+        <select asp-for="Rank" asp-items="Model.Ranks" class="form-select"></select>
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

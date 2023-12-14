@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Leagues";
+}
+
+<h1>Leagues</h1>
+<a class="btn btn-primary" asp-action="Create">Create new leagues</a>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Code</th>
+        <th>Rank</th>
+        <th>Country</th>
+        <th></th>
+    </tr>
+    <tbody>
+        @foreach (var league in Model)
+        {
+            <tr>
+                <td>@league.Id</td>
+                <td>@league.Name</td>
+                <td>@league.Code</td>
+                <td>@league.Rank</td>
+                <td>@league.CountryName</td>
+                <td>
+                    <a asp-action="Edit" class="btn btn-primary" asp-route-id="@league.Id">Edit</a>
+                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@league.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

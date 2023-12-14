@@ -8,6 +8,7 @@ namespace FM_DATABASE.Services
         public AutoMapperProfiles()
         {
             CreateMap<Player, PlayerCreationViewModel>();
+            CreateMap<League, LeagueCreationViewModel>();
         }
     }
 }
