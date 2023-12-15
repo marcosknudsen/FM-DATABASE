@@ -9,6 +9,7 @@ namespace FM_DATABASE.Services
         {
             CreateMap<Player, PlayerCreationViewModel>();
             CreateMap<League, LeagueCreationViewModel>();
+            CreateMap<Club, ClubCreationViewModel>();
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿using FM_DATABASE.Models;
+﻿using AutoMapper;
+using FM_DATABASE.Models;
 using FM_DATABASE.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Reflection;
 
 namespace FM_DATABASE.Controllers
 {
@@ -8,30 +11,50 @@ namespace FM_DATABASE.Controllers
     {
         private readonly IRepositoryClubs repositoryClubs;
         private readonly IRepositoryPlayers repositoryPlayers;
+        private readonly IRepositoryLeagues repositoryLeagues;
+        private readonly IMapper mapper;
 
-        public ClubController(IRepositoryClubs repositoryClubs,IRepositoryPlayers repositoryPlayers)
+        public ClubController(IRepositoryClubs repositoryClubs,IRepositoryPlayers repositoryPlayers,IRepositoryLeagues repositoryLeagues,IMapper mapper)
         {
             this.repositoryClubs = repositoryClubs;
             this.repositoryPlayers = repositoryPlayers;
+            this.repositoryLeagues = repositoryLeagues;
+            this.mapper = mapper;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var clubs = await repositoryClubs.GetAll();
-            return View(clubs);
+            ClubListViewModel lvm;
+            var clvArray = new List<ClubListViewModel>();
+
+            foreach (Club c in clubs)
+            {
+                lvm = new ClubListViewModel();
+                lvm.Id = c.Id;
+                lvm.Name = c.Name;
+                lvm.LeagueId = c.LeagueId;
+                lvm.LeagueName = (await repositoryLeagues.GetById(c.LeagueId)).Name;
+                clvArray.Add(lvm);
+            }
+
+            return View(clvArray);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var modelo = new ClubCreationViewModel();
+            modelo.Leagues=await GetLeagues();
+            return View(modelo);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Club club)
+        public async Task<IActionResult> Create(ClubCreationViewModel club)
         {
             if (!ModelState.IsValid)
             {
+                club.Leagues = await GetLeagues();
                 return View(club);
             }
 
@@ -43,11 +66,13 @@ namespace FM_DATABASE.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var club=await repositoryClubs.GetById(id);
-            return View(club);
+            var modelo = mapper.Map<ClubCreationViewModel>(club);
+            modelo.Leagues = await GetLeagues();
+            return View(modelo);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Club club)
+        public async Task<IActionResult> Edit(ClubCreationViewModel club)
         {
             if (!ModelState.IsValid)
             {
@@ -84,6 +109,12 @@ namespace FM_DATABASE.Controllers
 
             await repositoryClubs.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        private async Task<IEnumerable<SelectListItem>> GetLeagues()
+        {
+            var leagues = await repositoryLeagues.GetAll();
+            return leagues.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
         }
     }
 }

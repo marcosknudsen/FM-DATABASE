@@ -1,4 +1,4 @@
-﻿@model Club
+﻿@model ClubCreationViewModel
 
 @{
     ViewData["Title"] = "Edit club";
@@ -10,6 +10,10 @@
     <div class="mb-3">
         <label asp-for="Name" class="form-label"></label>
         <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="LeagueId" class="form-label"></label>
+        <select class="form-select" asp-for="LeagueId" asp-items="Model.Leagues"></select>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>

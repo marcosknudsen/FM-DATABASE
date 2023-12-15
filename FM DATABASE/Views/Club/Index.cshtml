@@ -10,6 +10,7 @@
         <tr>
             <th>Id</th>
             <th>Club</th>
+            <th>League</th>
             <th></th>
         </tr>
     </thead>
@@ -22,6 +23,9 @@
                 </td>
                 <td>
                     @club.Name
+                </td>
+                <td>
+                    @club.LeagueName
                 </td>
                 <td style="text-align:right">
                     <a asp-action="Edit" asp-route-id="@club.Id" class="btn btn-primary">Edit</a>

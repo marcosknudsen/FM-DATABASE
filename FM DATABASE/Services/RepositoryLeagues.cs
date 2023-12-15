@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using FM_DATABASE.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using System.Data.Common;
 
@@ -56,12 +57,10 @@ namespace FM_DATABASE.Services
 
         public async Task<League> GetById(int id)
         {
-            using (var connection=new SqlConnection(connectionString))
-            {
-                var league=await connection.QueryFirstOrDefaultAsync<League>($@"SELECT Name,Code,Rank,CountryId FROM League WHERE Id=@Id", new { id });
-                league.Id = id;
-                return league;
-            }
+            using var connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<League>(
+                @"SELECT Id, Name,Code,CountryId,Rank FROM League
+                WHERE Id=@Id", new { id });
         }
     }
 }
