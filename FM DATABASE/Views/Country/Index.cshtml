@@ -23,8 +23,12 @@
                 <td>@country.Code</td>
                 <td>@country.Name</td>
                 <td style="text-align:right">
-                    <a asp-action="Edit" asp-route-id="@country.Id" class="btn btn-primary">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@country.Id" class="btn btn-danger">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@country.Id" class="btn btn-primary">
+                        <i class="bi-pencil-fill"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@country.Id" class="btn btn-danger">
+                        <i class="bi-trash-fill"></i>
+                    </a>
                 </td>
             </tr>
         }
